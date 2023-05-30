@@ -1,7 +1,12 @@
+import { Outlet } from "react-router-dom"
+import Navbar from "../components/shared/Navbar/Navbar"
+
 const Main = () => {
   return (
     <div>
-      <h1>Welcome TO AirCNC</h1>
+      <Navbar></Navbar>
+      <div className="pt-28"><Outlet></Outlet></div>
+      
     </div>
   )
 }
