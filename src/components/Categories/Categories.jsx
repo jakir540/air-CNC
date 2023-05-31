@@ -5,9 +5,12 @@ import CategoriBox from './CategoriBox';
 
 
 const Categories = () => {
+
+   
+
     return (
        <Container>
-         <div className='flex flex-row justify-between overflow-x-auto items-center'>
+         <div  className='flex flex-row justify-between overflow-x-auto items-center'>
            {
             CategoriData.map((item,index)=> <CategoriBox key={index} item={item} ></CategoriBox>)
            }

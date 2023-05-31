@@ -1,14 +1,20 @@
 import React, { useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbFidgetSpinner } from "react-icons/tb";
 
 import { FcGoogle } from "react-icons/fc";
-import { AuthContext } from "../../../../providers/AuthProvider";
+
 import { toast } from "react-hot-toast";
+import { AuthContext } from "../../providers/AuthProvider";
+import { saveUser } from "../../api/auth";
 
 const Login = () => {
-  const emailRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+
+  const emailRef = useRef();
   const { loading, setLoading, signIn, signInWithGoogle, resetPassword } =
     useContext(AuthContext);
   //sign in with google
@@ -18,7 +24,9 @@ const Login = () => {
         const loggedUser = result.user;
         console.log(loggedUser);
         toast("google sign in successfully");
-        navigate("/");
+        //saved user in DB
+        saveUser(result.user)
+        navigate(from, { replace: true })
       })
       .catch((error) => {
         setLoading(false);
@@ -38,11 +46,13 @@ const Login = () => {
       .then((result) => {
         const loggedUser = result.user;
         console.log(loggedUser);
+        toast("Login SuccessFully");
+        navigate(from, { replace: true })
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
-        toast("error.message");
+        toast(error.message);
       });
   };
 

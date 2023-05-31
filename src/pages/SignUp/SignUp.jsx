@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbFidgetSpinner } from "react-icons/tb";
-
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../providers/AuthProvider";
+import { saveUser } from "../../api/auth";
+
+
 const SignUp = () => {
   const {
     user,
@@ -49,9 +51,12 @@ const SignUp = () => {
 
         createUser(email, password)
         .then(result => {
+          
           updateUserProfile(name, imageUrl)
             .then(() => {
               toast.success('Signup successful')
+              //saved user in DB-------------------------
+              saveUser(result.user)
               navigate(from, { replace: true })
             })
             .catch(err => {
@@ -59,6 +64,8 @@ const SignUp = () => {
               console.log(err.message)
               toast.error(err.message)
             })
+
+
         })
         .catch(err => {
           setLoading(false)
@@ -66,6 +73,7 @@ const SignUp = () => {
           toast.error(err.message)
         })
     })
+
     .catch(err => {
       setLoading(false)
       console.log(err.message)
@@ -78,6 +86,8 @@ const SignUp = () => {
         const loggedUser = result.user;
         console.log(loggedUser);
         toast("google sign in successfully");
+        //saved user in DB-----------
+        saveUser(result.user)
         navigate(from, { replace: true });
       })
       .catch((error) => {
